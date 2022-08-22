@@ -28,7 +28,20 @@ seed_ciar <- ciar %>%
     Date_ymd == "2022-08-17" ~ "t1", 
     Date_ymd == "2022-08-18" ~ "t2", 
     TRUE ~ Date_ymd)
-  )
+  ) %>%
+  
+  mutate(
+    Seed_mass_mg = as.numeric(Seed_mass_mg),
+    Seed_mass_mg = round(Seed_mass_mg, digits = 2)
+  ) %>%
+  
+  mutate(
+    time = factor(time, levels = c("t1", "t2")), 
+    Section = factor(
+      Section, 
+      levels = c("1", "2", "3", "4", "5", "6")
+      )
+    ) 
 
 # t-test ----
 

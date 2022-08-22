@@ -17,23 +17,18 @@ tail(seeds_df, n = 5)
 
 # clean data ----
 
-seeds_tidy <- seeds_df %>%
-  filter(Spp != "RUHI")
-
-# visualize data ----
-
 ciar <- seeds_tidy %>%
   filter(Spp == "CIAR" & !is.na(Section))
 
 seed_ciar <- ciar %>%
   mutate(Date_ymd = as.character(Date_ymd)) %>%
-  ggplot(aes(x = Seed_mass_mg, fill = Date_ymd)) +
-  geom_density(alpha = 0.1) +
-  theme_bw()
-
-seed_ciar2 <- ciar %>%
-  ggplot(aes(x = Seed_mass_mg, y = ID, col = Date_ymd)) +
-  geom_point()
+  mutate(time = case_when(
+    Date_ymd == "2022-08-15" ~ "t1",
+    Date_ymd == "2022-08-16" ~ "t2",
+    Date_ymd == "2022-08-17" ~ "t1", 
+    Date_ymd == "2022-08-18" ~ "t2", 
+    TRUE ~ Date_ymd)
+  )
 
 # t-test ----
 

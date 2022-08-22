@@ -43,52 +43,31 @@ seed_ciar <- ciar %>%
       )
     ) 
 
-# t-test ----
+# visualize data ----
 
-# hehe
-
-hehe_t1 <- hehe %>%
-  mutate(Date_ymd = as.character(Date_ymd)) %>%
-  filter(Date_ymd == "2022-08-08") %>%
-  pull(Seed_mass_mg)
-
-hehe_t2 <- hehe %>%
-  mutate(Date_ymd = as.character(Date_ymd)) %>%
-  filter(Date_ymd == "2022-08-09") %>%
-  pull(Seed_mass_mg)
-
-t_test_hehe <- t.test(
-  x = hehe_t1, 
-  y = hehe_t2, 
-  alternative = "two.sided",
-  paired = TRUE,
-  conf.level = 0.95
+(seeds_ciar_plot <- seed_ciar %>%
+  ggplot(aes(y = ID, x = Seed_mass_mg)) + 
+  geom_point(aes(color = time)) + 
+  facet_wrap(~Section) + 
+  theme_bw() + 
+  scale_color_discrete(
+    name = "Time", 
+    labels = c("Hour 0", "Hour 24")
+  )
 )
 
-# ciar
-
-ciar_t1 <- ciar %>%
-  mutate(Date_ymd = as.character(Date_ymd)) %>%
-  filter(Date_ymd == "2022-08-08") %>%
-  pull(Seed_mass_mg)
-
-ciar_t2 <- ciar %>%
-  mutate(Date_ymd = as.character(Date_ymd)) %>%
-  filter(Date_ymd == "2022-08-09") %>%
-  pull(Seed_mass_mg)
-
-t_test_ciar <- t.test(
-  x = ciar_t1, 
-  y = ciar_t2, 
-  alternative = "two.sided",
-  paired = TRUE
+(seeds_ciar_plot2 <- seed_ciar %>%
+    ggplot(aes(x = Section, y = Seed_mass_mg)) + 
+    geom_boxplot() + 
+    geom_point(alpha = 0.1) + 
+    facet_wrap(~time) +
+    labs(y = "Seed mass (mg)") +
+    theme_bw()
 )
 
-ggsave(
-  filename = here("output", "seed_mass.png"), 
-  plot = seed_mass, 
-  device = "png", 
-  units = "in", 
-  height = 5, 
-  width = 5
+# analyze data ----
+
+aov_ciar <- aov(
+  formula = Seed_mass_mg ~ time + Section, 
+  data = seed_ciar
 )

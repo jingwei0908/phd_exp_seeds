@@ -22,21 +22,8 @@ seeds_tidy <- seeds_df %>%
 
 # visualize data ----
 
-hehe <- seeds_tidy %>%
-  filter(Spp == "HEHE") 
-
 ciar <- seeds_tidy %>%
-  filter(Spp == "CIAR")
-
-seed_hehe <- hehe %>%
-  mutate(Date_ymd = as.character(Date_ymd)) %>%
-  ggplot(aes(x = Seed_mass_mg, fill = Date_ymd)) +
-  geom_density(alpha = 0.1) +
-  theme_bw()
-
-seed_hehe2 <- hehe %>%
-  ggplot(aes(x = Seed_mass_mg, y = ID, col = Date_ymd)) + 
-  geom_point()
+  filter(Spp == "CIAR" & !is.na(Section))
 
 seed_ciar <- ciar %>%
   mutate(Date_ymd = as.character(Date_ymd)) %>%
